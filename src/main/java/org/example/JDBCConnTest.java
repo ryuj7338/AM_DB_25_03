@@ -28,38 +28,34 @@ public class JDBCConnTest {
             String cmd = sc.nextLine();
 
             if (cmd.equals("article write")) {
-                System.out.print("제목 : ");
-                String title = sc.nextLine();
-                System.out.print("내용 : ");
-                String content = sc.nextLine();
-
-                String sql = "Insert INTO article"
-                        + " VALUES('" + title + "', '" + content + "')";
-
+                
+                String sql = "INSERT INTO article" +
+                        " SET regDate = NOW()," +
+                        "updateDate = NOW()," +
+                        "title = CONCAT('제목',SUBSTRING(RAND() * 1000 FROM 1 FOR 2))," +
+                        "content = CONCAT('내용',SUBSTRING(RAND() * 1000 FROM 1 FOR 2))";
 
 
                 stmt = conn.createStatement();
-                
+
                 int result = stmt.executeUpdate(sql);
 
                 if (result > 0) {
                     System.out.println("입력 성공");
-                }else {
+                } else {
                     System.out.println("입력 실패");
                 }
 
-            }else if (cmd.equals("article list")) {
+            } else if (cmd.equals("article list")) {
                 String sql = "select * from article";
                 stmt = conn.createStatement();
                 rs = stmt.executeQuery(sql);
                 while (rs.next()) {
                     String title2 = rs.getString("title");
                     String content2 = rs.getString("content");
-                    System.out.println(title2 + "  " + content2 + " " );
+                    System.out.println(title2 + "  " + content2 + " ");
                 }
             }
-
-
 
 
         } catch (ClassNotFoundException e) {
