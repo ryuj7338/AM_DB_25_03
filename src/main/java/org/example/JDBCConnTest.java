@@ -23,7 +23,7 @@ public class JDBCConnTest {
             conn = DriverManager.getConnection(url, "root", "");
             System.out.println("연결 성공!");
 
-            while (true){
+
                 Scanner sc = new Scanner(System.in);
                 System.out.print("명령어) ");
                 String cmd = sc.nextLine();
@@ -60,9 +60,25 @@ public class JDBCConnTest {
                         String content2 = rs.getString("content");
                         System.out.println(title2 + "  " + content2 + " ");
                     }
-                }
+                }else if (cmd.startsWith("article modify")) {
 
-            }
+                    System.out.print("수정할 번호: ");
+                    int id = sc.nextInt();
+                    System.out.print("수정할 제목 : ");
+                    String newtitle = sc.nextLine();
+                    System.out.print("수정할 내용: ");
+                    String newcontent = sc.nextLine();
+
+
+                    String sql = "UPDATE article"
+                            + " SET regDate = NOW(),"
+                            + "updateDate = NOW(),"
+                            + "id = " + id + "',"
+                            + "title = '" + newtitle + "',"
+                            + "content = '" + newcontent + "'";
+
+
+                }
 
 
 

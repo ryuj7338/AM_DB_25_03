@@ -25,3 +25,10 @@ INSERT INTO article
 updateDate = NOW(),
 title = CONCAT('제목',SUBSTRING(RAND() * 1000 FROM 1 FOR 2)),
 content = CONCAT('내용',SUBSTRING(RAND() * 1000 FROM 1 FOR 2));
+
+
+UPDATE article
+SET updatDate = NOW(),
+    title = 'title1',
+    content = 'content1'
+WHERE id = 2;
