@@ -23,39 +23,47 @@ public class JDBCConnTest {
             conn = DriverManager.getConnection(url, "root", "");
             System.out.println("연결 성공!");
 
-            Scanner sc = new Scanner(System.in);
-            System.out.print("명령어) ");
-            String cmd = sc.nextLine();
+            while (true){
+                Scanner sc = new Scanner(System.in);
+                System.out.print("명령어) ");
+                String cmd = sc.nextLine();
 
-            if (cmd.equals("article write")) {
-                
-                String sql = "INSERT INTO article" +
-                        " SET regDate = NOW()," +
-                        "updateDate = NOW()," +
-                        "title = CONCAT('제목',SUBSTRING(RAND() * 1000 FROM 1 FOR 2))," +
-                        "content = CONCAT('내용',SUBSTRING(RAND() * 1000 FROM 1 FOR 2))";
+                if (cmd.equals("article write")) {
+
+                    String sql = "INSERT INTO article" +
+                            " SET regDate = NOW()," +
+                            "updateDate = NOW()," +
+                            "title = CONCAT('제목',SUBSTRING(RAND() * 1000 FROM 1 FOR 2))," +
+                            "content = CONCAT('내용',SUBSTRING(RAND() * 1000 FROM 1 FOR 2))";
 
 
-                stmt = conn.createStatement();
+                    System.out.println(sql);
 
-                int result = stmt.executeUpdate(sql);
+                    stmt = conn.createStatement();
 
-                if (result > 0) {
-                    System.out.println("입력 성공");
-                } else {
-                    System.out.println("입력 실패");
+                    int result = stmt.executeUpdate(sql);
+
+                    System.out.println("result: " + result);
+
+                    if (result > 0) {
+                        System.out.println("입력 성공");
+                    } else {
+                        System.out.println("입력 실패");
+                    }
+
+                } else if (cmd.equals("article list")) {
+                    String sql = "select * from article";
+                    stmt = conn.createStatement();
+                    rs = stmt.executeQuery(sql);
+                    while (rs.next()) {
+                        String title2 = rs.getString("title");
+                        String content2 = rs.getString("content");
+                        System.out.println(title2 + "  " + content2 + " ");
+                    }
                 }
 
-            } else if (cmd.equals("article list")) {
-                String sql = "select * from article";
-                stmt = conn.createStatement();
-                rs = stmt.executeQuery(sql);
-                while (rs.next()) {
-                    String title2 = rs.getString("title");
-                    String content2 = rs.getString("content");
-                    System.out.println(title2 + "  " + content2 + " ");
-                }
             }
+
 
 
         } catch (ClassNotFoundException e) {
