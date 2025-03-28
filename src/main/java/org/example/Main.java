@@ -7,8 +7,12 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        insertForPrepared();
+
+
         System.out.println("==프로그램 시작==");
         Scanner sc = new Scanner(System.in);
+
 
         int lastArticleId = 0;
         List<Article> articles = new ArrayList<Article>();
@@ -46,6 +50,9 @@ public class Main {
 
             }
         }
+    }
+
+    public static void insertForPrepared() {
     }
 }
 class Article {
