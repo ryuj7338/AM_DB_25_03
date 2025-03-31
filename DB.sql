@@ -1,34 +1,72 @@
-DROP DATABASE IF EXISTS AM_DB_25_03;
-CREATE DATABASE AM_DB_25_03;
-USE AM_DB_25_03;
+drop database if exists AM_DB_25_03;
+create database AM_DB_25_03;
+use AM_DB_25_03;
 
-CREATE TABLE article(
-                        id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-                        regDate DATETIME NOT NULL,
-                        updateDate DATETIME NOT NULL,
-                        title VARCHAR(100) NOT NULL,
-                        content TEXT NOT NULL
+create table article(
+                        id int(10) unsigned not null primary key auto_increment,
+                        regDate datetime not null,
+                        updateDate datetime not null,
+                        title char(100) not null,
+    `body` text not null
 );
 
-SELECT * FROM article;
-
-SELECT NOW();
-
-SELECT '제목1';
-
-SELECT CONCAT('제목', '1');
-
-SELECT SUBSTRING(RAND() * 1000 FROM 1 FOR 2);
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+title = '제목1',
+    `body` = '내용1';
 
 INSERT INTO article
- SET regDate = NOW(),
+SET regDate = NOW(),
 updateDate = NOW(),
-title = CONCAT('제목',SUBSTRING(RAND() * 1000 FROM 1 FOR 2)),
-content = CONCAT('내용',SUBSTRING(RAND() * 1000 FROM 1 FOR 2));
+title = '제목2',
+    `body` = '내용2';
 
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+title = '제목3',
+    `body` = '내용3';
+
+select *
+from article
+order by id desc;
+
+select now();
+
+select '제목1';
+
+select concat('제목',' 1');
+
+select substring(RAND() * 1000 from 1 for 2);
+
+insert into articleset regDate = now(),updateDate = now(),title = concat('제목',substring(RAND() * 1000 from 1 for 2)),`body` = concat('내용',substring(RAND() * 1000 from 1 for 2));
+
+insert into article
+set regDate = now(),
+updateDate = now(),
+title = concat('제목',substring(RAND() * 1000 from 1 for 2)),
+    `body` = concat('내용',substring(RAND() * 1000 from 1 for 2));
+
+update article
+set updateDate = now(),
+    title = 'title1',
+    `body` = 'body1'
+where id = 3;
+
+update article
+set updateDate = now(),
+    `body` = 'body1'
+where id = 1;
+
+select * from article;
+
+select count(*)
+from article
+where id = 5;
 
 UPDATE article
-SET updatDate = NOW(),
+SET updateDate = NOW(),
     title = 'title1',
-    content = 'content1'
-WHERE id = 2;
+    `body` = 'body1'
+WHERE id = 5;
