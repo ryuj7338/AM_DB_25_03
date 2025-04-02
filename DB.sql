@@ -70,3 +70,7 @@ SET updateDate = NOW(),
     title = 'title1',
     `body` = 'body1'
 WHERE id = 5;
+
+
+delete from article
+where id = 3;

@@ -60,7 +60,86 @@ public class App {
             return -1;
         }
 
-        if (cmd.equals("article write")) {
+        if (cmd.equals("member join")) {
+            String loginId = null;
+            String loginPw = null;
+            String loginConfirm = null;
+            String name = null;
+            System.out.println("== 회원가입 ==");
+
+            while (true) {
+                System.out.print("loginId : ");
+                loginId = sc.nextLine().trim();
+
+                if (loginId.length() == 0 || loginId.contains(" ")) {
+                    System.out.println("아이디를 다시 입력하세요");
+                    continue;
+                }
+                SecSql sql = new SecSql();
+
+                sql.append("select count(*) > 0");
+                sql.append("from `member`");
+                sql.append("loginId = ?;", loginId);
+
+                boolean isLoginIdDup = DBUtil.selectRowBooleanValue(conn, sql);
+
+                System.out.println(isLoginIdDup);
+
+                if (isLoginIdDup) {
+                    System.out.println("이미 사용중인 아이디입니다.");
+                    continue;
+                }
+                break;
+            }
+            while (true) {
+                System.out.print("loginPw : ");
+                loginPw = sc.nextLine();
+
+                if (loginPw.length() == 0 || loginPw.contains(" ")) {
+                    System.out.println("비밀번호를 다시 입력하세요");
+                    continue;
+                }
+
+                boolean loginCheckPW = true;
+
+                while (true) {
+                    System.out.println("loginPwCheck : ");
+                    loginConfirm = sc.nextLine().trim();
+
+                    if (loginConfirm.length() == 0 || loginConfirm.contains(" ")) {
+                        System.out.println("비밀번호가 일치하지 않습니다.");
+                        loginCheckPW = false;
+                    }
+                    break;
+                }
+                if (loginCheckPW) {
+                    break;
+                }
+            }
+            while (true) {
+                System.out.print("name : ");
+                name = sc.nextLine();
+
+                if (name.length() == 0 || name.contains(" ")) {
+                    System.out.println("다시 입력하세요");
+                    continue;
+                }
+                break;
+            }
+            SecSql sql = new SecSql();
+
+            sql.append("insert into `member`");
+            sql.append("SET regDate = NOW(),");
+            sql.append("updateDate = NOW(),");
+            sql.append("loginId = ?,", loginId);
+            sql.append("loginPW = ?,", loginPw);
+            sql.append("`name` =  ?;", name);
+            int id = DBUtil.insert(conn, sql);
+
+            System.out.println(id + "번 회원이 가입되었습니다.");
+
+
+        } else if (cmd.equals("article write")) {
             System.out.println("==글쓰기==");
             System.out.print("제목 : ");
             String title = sc.nextLine();
@@ -136,7 +215,7 @@ public class App {
             System.out.print("새 내용 : ");
             String body = sc.nextLine().trim();
 
-             sql = new SecSql();
+            sql = new SecSql();
 
             PreparedStatement pstmt = null;
             sql.append("UPDATE article");
@@ -153,7 +232,7 @@ public class App {
             DBUtil.update(conn, sql);
 
             System.out.println(id + "번 글이 수정되었습니다.");
-        }else if (cmd.startsWith("article detail")) {
+        } else if (cmd.startsWith("article detail")) {
 
             int id = 0;
 
