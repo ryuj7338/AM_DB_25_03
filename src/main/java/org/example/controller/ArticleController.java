@@ -4,16 +4,14 @@ import org.example.container.Container;
 import org.example.dto.Article;
 import org.example.service.ArticleService;
 
-
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class ArticleController {
 
     private Scanner sc;
     private ArticleService articleService;
-
+    private List<Article> articles;
 
     public ArticleController() {
         this.sc = Container.sc;
@@ -40,10 +38,26 @@ public class ArticleController {
         System.out.println(id + "번 글이 생성되었습니다.");
     }
 
-    public void showList() {
+    public void showList(String cmd) {
         System.out.println("==목록==");
 
-        List<Article> articles = articleService.getArticles();
+//        List<Article> forPrintArticles = articleService.getArticles();
+
+        String[] comBits = cmd.split(" ");
+
+        int page = 1;
+        String searchKeyword = "";
+
+        if (comBits.length >= 3) {
+            page = Integer.parseInt(comBits[2]);
+        }
+        if (comBits.length >= 4) {
+            searchKeyword = comBits[3];
+        }
+
+        int itemsInPage = 10;
+
+        List<Article> articles = articleService.getForPrintArticles(page, itemsInPage, searchKeyword);
 
 
         if (articles.size() == 0) {
@@ -55,6 +69,8 @@ public class ArticleController {
         for (Article article : articles) {
             System.out.printf("  %d     /   %s   \n", article.getId(), article.getTitle());
         }
+
+
     }
 
     public void doModify(String cmd) {
@@ -79,7 +95,7 @@ public class ArticleController {
             System.out.println(id + "번 글은 없습니다.");
             return;
         }
-        if (article.getTitle() != Container.session.loginedMemberId) {
+        if (article.getMemberId() != Container.session.loginedMemberId) {
             System.out.println("권한이 없습니다.");
             return;
         }
