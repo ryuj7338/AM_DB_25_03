@@ -3,17 +3,12 @@ package org.example.sevice;
 import org.example.dao.MemberDao;
 import org.example.dto.Member;
 
-import java.sql.Connection;
-
 public class MemberService {
 
     private MemberDao memberDao;
 
     public MemberService() {
         this.memberDao = new MemberDao();
-    }
-    public int doLogin( String loginId, String loginPw) {
-        return this.memberDao.doLogin(loginId, loginPw);
     }
 
     public boolean isLoginIdDup(String loginId) {

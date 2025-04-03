@@ -1,4 +1,4 @@
-package org.example.sevice;
+package org.example.service;
 
 import org.example.container.Container;
 import org.example.dao.ArticleDao;
@@ -16,11 +16,13 @@ public class ArticleService {
         this.articleDao = Container.articleDao;
     }
 
-    public int doWrite(String title, String body) {
-        return articleDao.doWrite(title, body);
+    public int doWrite(int memberId, String title, String body) {
+        return articleDao.doWrite(memberId,title, body);
+
     }
 
     public List<Article> getArticles() {
+
         return articleDao.getArticles();
     }
 
