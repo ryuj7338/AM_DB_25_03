@@ -12,18 +12,18 @@ public class MemberService {
     public MemberService() {
         this.memberDao = new MemberDao();
     }
-    public int doLogin(Connection conn, String loginId, String loginPw) {
-        return this.memberDao.doLogin(conn, loginId, loginPw);
+    public int doLogin( String loginId, String loginPw) {
+        return this.memberDao.doLogin(loginId, loginPw);
     }
 
-    public boolean isLoginIdDup(Connection conn, String loginId) {
-        return memberDao.isLoginIdDup(conn,loginId);
+    public boolean isLoginIdDup(String loginId) {
+        return memberDao.isLoginIdDup(loginId);
     }
-    public int doJoin(Connection conn, String loginId, String loginPw, String name) {
-        return memberDao.doJoin(conn,loginId,loginPw,name);
+    public int doJoin( String loginId, String loginPw, String name) {
+        return memberDao.doJoin(loginId,loginPw,name);
     }
 
-    public Member getMemberByLoginId(Connection conn, String loginId) {
-        return memberDao.getMemberByLoginId(conn, loginId);
+    public Member getMemberByLoginId(String loginId) {
+        return memberDao.getMemberByLoginId(loginId);
     }
 }

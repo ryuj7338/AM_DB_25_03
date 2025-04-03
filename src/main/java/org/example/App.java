@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.container.Container;
 import org.example.controller.ArticleController;
 import org.example.controller.MemberController;
 
@@ -10,11 +11,16 @@ import java.util.Scanner;
 
 public class App {
 
-    public void run() {
-        System.out.println("==프로그램 시작==");
-        Scanner sc = new Scanner(System.in);
+    private Scanner sc;
 
-//        Controller controller = null;
+    public App() {
+        Container.init();
+        this.sc = Container.sc;
+    }
+
+    public void run() {
+
+        System.out.println("==프로그램 시작==");
 
         while (true) {
             System.out.print("명령어 > ");
@@ -33,7 +39,9 @@ public class App {
             try {
                 conn = DriverManager.getConnection(url, "root", "");
 
-                int actionResult = action(conn, sc, cmd);
+                Container.conn = conn;
+
+                int actionResult = action(cmd);
 
                 if (actionResult == -1) {
                     System.out.println("==프로그램 종료==");
@@ -55,22 +63,22 @@ public class App {
         }
     }
 
-    private int action(Connection conn, Scanner sc, String cmd) {
+    private int action(String cmd) {
 
         if (cmd.equals("exit")) {
             return -1;
         }
 
-        ArticleController articleController = new ArticleController(sc, conn);
-        MemberController memberController = new MemberController(sc, conn);
+        ArticleController articleController = Container.articleController;
+        MemberController memberController = Container.memberController;
 
-
-        if (cmd.equals("member join")) {
+        if (cmd.equals("member logout")) {
+            memberController.logout();
+        } else if (cmd.equals("member join")) {
             memberController.doJoin();
-        }else if (cmd.equals("member login")) {
-            memberController.doLogin();
-        }
-        else if (cmd.equals("article write")) {
+        } else if (cmd.equals("member login")) {
+            memberController.login();
+        } else if (cmd.equals("article write")) {
             articleController.doWrite();
         } else if (cmd.equals("article list")) {
             articleController.showList();
@@ -80,7 +88,7 @@ public class App {
             articleController.showDetail(cmd);
         } else if (cmd.startsWith("article delete")) {
             articleController.doDelete(cmd);
-        }else {
+        } else {
             System.out.println("사용할 수 없는 명령어입니다.");
         }
         return 0;

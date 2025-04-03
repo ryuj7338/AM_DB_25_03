@@ -12,9 +12,6 @@ import java.util.Map;
 public class ArticleDao {
     Connection conn;
 
-    public ArticleDao(Connection conn) {
-        this.conn = conn;
-    }
 
     public int doWrite(String title, String body) {
 
