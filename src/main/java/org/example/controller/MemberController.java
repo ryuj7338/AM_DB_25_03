@@ -1,9 +1,9 @@
 package org.example.controller;
 
 import org.example.container.Container;
-import org.example.sevice.MemberService;
-
 import org.example.dto.Member;
+import org.example.service.MemberService;
+
 import java.sql.Connection;
 import java.util.Scanner;
 
@@ -48,7 +48,7 @@ public class MemberController {
         int tryMaxCount = 3;
         int tryCount = 0;
 
-        while(true) {
+        while (true) {
             if (tryCount >= tryMaxCount) {
                 System.out.println("비밀번호가 틀렸습니다. 다시 입력하세요");
                 break;
@@ -65,22 +65,31 @@ public class MemberController {
                 System.out.println("비밀번호가 일치하지 않습니다.");
                 continue;
             }
+
+            Container.session.login(member);
+
             System.out.println(member.getName() + "님 환영합니다.");
             break;
         }
     }
+
     public void showProfile() {
-        if (Container.session.loginedMemberId == -1) {
-            System.out.println("로그인 상태가 아닙니다.");
+        if (Container.session.isLogined() == false) {
+            System.out.println("로그인 후 이용하세요");
             return;
-        }else {
+        } else {
             System.out.println(Container.session.loginedMember);
         }
+
     }
+
     public void logout() {
+        if (Container.session.isLogined() == false) {
+            System.out.println("로그인 후 이용하세요");
+            return;
+        }
         System.out.println("== 로그아웃 ==");
-        Container.session.loginedMember = null;
-        Container.session.loginedMemberId = -1;
+        Container.session.logout();
     }
 
     public void doJoin() {

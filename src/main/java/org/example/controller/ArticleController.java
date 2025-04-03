@@ -2,7 +2,7 @@ package org.example.controller;
 
 import org.example.container.Container;
 import org.example.dto.Article;
-import org.example.sevice.ArticleService;
+import org.example.service.ArticleService;
 
 
 import java.util.List;
@@ -21,13 +21,21 @@ public class ArticleController {
     }
 
     public void doWrite() {
+
+        if (Container.session.isLogined() == false) {
+            System.out.println("로그인 후 이용하세요");
+            return;
+        }
+
         System.out.println("==글쓰기==");
         System.out.print("제목 : ");
         String title = sc.nextLine();
         System.out.print("내용 : ");
         String body = sc.nextLine();
 
-        int id = articleService.doWrite(title, body);
+        int memberId = Container.session.loginedMemberId;
+
+        int id = articleService.doWrite(memberId, title, body);
 
         System.out.println(id + "번 글이 생성되었습니다.");
     }
@@ -51,6 +59,11 @@ public class ArticleController {
 
     public void doModify(String cmd) {
 
+        if (Container.session.isLogined() == false) {
+            System.out.println("로그인 후 이용하세요");
+            return;
+        }
+
         int id = 0;
 
         try {
@@ -60,10 +73,14 @@ public class ArticleController {
             return;
         }
 
-        Map<String, Object> articleMap = articleService.getArticleById(id);
+        Article article = articleService.getArticleById(id);
 
-        if (articleMap.isEmpty()) {
+        if (article == null) {
             System.out.println(id + "번 글은 없습니다.");
+            return;
+        }
+        if (article.getTitle() != Container.session.loginedMemberId) {
+            System.out.println("권한이 없습니다.");
             return;
         }
 
@@ -89,22 +106,18 @@ public class ArticleController {
             id = Integer.parseInt(cmd.split(" ")[2]);
         } catch (Exception e) {
             System.out.println("번호는 정수로 입력해");
-            return ;
+            return;
         }
-
-
 
         System.out.println("== 상세보기 ==");
 
-        Map<String, Object> articleMap = articleService.getArticleById(id);
+        Article article = articleService.getArticleById(id);
 
-
-        if (articleMap.isEmpty()) {
+        if (article == null) {
             System.out.println(id + "번 글은 없습니다.");
             return;
         }
 
-        Article article = new Article(articleMap);
 
         System.out.println("번호 : " + article.getId());
         System.out.println("제목 : " + article.getTitle());
@@ -114,19 +127,28 @@ public class ArticleController {
 
     public void doDelete(String cmd) {
 
+        if (Container.session.isLogined() == false) {
+            System.out.println("로그인 후 이용하세요");
+            return;
+        }
+
         int id = 0;
 
         try {
             id = Integer.parseInt(cmd.split(" ")[2]);
         } catch (Exception e) {
-            System.out.println("번호는 정수로 입력해");
+            System.out.println("번호는 정수로 입력하세요");
             return;
         }
 
-        Map<String, Object> articleMap = articleService.getArticleById(id);
+        Article article = articleService.getArticleById(id);
 
-        if (articleMap.isEmpty()) {
+        if (article == null) {
             System.out.println(id + "번 글은 없습니다.");
+            return;
+        }
+        if (article.getMemberId() != Container.session.loginedMemberId) {
+            System.out.println("권한이 없습니다.");
             return;
         }
 

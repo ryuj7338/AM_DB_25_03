@@ -19,16 +19,6 @@ public class MemberDao {
 
         return DBUtil.selectRowBooleanValue(Container.conn, sql);
     }
-    public int doLogin(String loginId, String loginPw) {
-        SecSql sql = new SecSql();
-
-        sql.append("SELECT COUNT(*) FROM `member`");
-        sql.append("WHERE loginId = ?,", loginId);
-        sql.append("OR loginPw = ?", loginPw);
-        sql.append("LIMIT 3");
-
-        return DBUtil.selectRowIntValue(Container.conn, sql);
-    }
 
     public int doJoin(String loginId, String loginPw, String name) {
 

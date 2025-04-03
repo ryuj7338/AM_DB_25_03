@@ -5,8 +5,8 @@ import org.example.controller.MemberController;
 import org.example.dao.ArticleDao;
 import org.example.dao.MemberDao;
 import org.example.session.Session;
-import org.example.sevice.ArticleService;
-import org.example.sevice.MemberService;
+import org.example.service.ArticleService;
+import org.example.service.MemberService;
 
 import java.sql.Connection;
 import java.util.Scanner;

@@ -1,4 +1,4 @@
-package org.example.sevice;
+package org.example.service;
 
 import org.example.dao.MemberDao;
 import org.example.dto.Member;
