@@ -1,6 +1,6 @@
 package org.example.sevice;
 
-import org.example.Article;
+import org.example.dto.Article;
 import org.example.dao.ArticleDao;
 
 import java.sql.Connection;

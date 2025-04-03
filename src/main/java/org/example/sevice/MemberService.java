@@ -1,8 +1,8 @@
 package org.example.sevice;
 
 import org.example.dao.MemberDao;
+import org.example.dto.Member;
 
-import java.lang.reflect.Member;
 import java.sql.Connection;
 
 public class MemberService {
@@ -12,6 +12,9 @@ public class MemberService {
     public MemberService() {
         this.memberDao = new MemberDao();
     }
+    public int doLogin(Connection conn, String loginId, String loginPw) {
+        return this.memberDao.doLogin(conn, loginId, loginPw);
+    }
 
     public boolean isLoginIdDup(Connection conn, String loginId) {
         return memberDao.isLoginIdDup(conn,loginId);
@@ -20,7 +23,7 @@ public class MemberService {
         return memberDao.doJoin(conn,loginId,loginPw,name);
     }
 
-    public Member getMemberByLoginId(Connection conn,String loginId) {
+    public Member getMemberByLoginId(Connection conn, String loginId) {
         return memberDao.getMemberByLoginId(conn, loginId);
     }
 }
