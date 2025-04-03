@@ -1,6 +1,8 @@
-package org.example;
+package org.example.controller;
 
 import org.example.sevice.MemberService;
+import org.example.Member;
+
 
 import java.sql.Connection;
 import java.util.Scanner;
@@ -16,6 +18,65 @@ public class MemberController {
         this.conn = conn;
         this.memberService = new MemberService();
     }
+    public void doLogin() {
+        String loginId = null;
+        String loginPw = null;
+        System.out.println("== 로그인 ==");
+
+        int tryIdMaxCount = 3;
+        int tryIdCount = 0;
+
+        Member member = memberService.getMemberByLoginId(conn,loginId);
+
+        while (true){
+            if (tryIdCount >= tryIdMaxCount) {
+                System.out.println("다시 입력하세요");
+                break;
+            }
+            System.out.print("아이디 : ");
+            loginId = sc.nextLine().trim();
+
+            if (loginId.length() == 0 || loginId.contains(" ")) {
+                System.out.println("아이디를 다시 입력하세요");
+                continue;
+            }
+
+            if (member.getLoginId().equals(loginId) == false){
+                tryIdCount++;
+                System.out.println("일치하는 아이디가 없습니다.");
+            }
+            boolean isLoginIdDup = memberService.isLoginIdDup(conn, loginId);
+
+            if (isLoginIdDup == false) {
+                System.out.println(loginId+"는 없는 아이디입니다.");
+                continue;
+            }
+
+        }
+
+        int tryPwMaxCount = 3;
+        int tryPwCount = 0;
+
+
+        while (true) {
+            if (tryPwCount >= tryPwMaxCount) {
+                System.out.println("비밀번호가 일치하지 않습니다. 다시 시도하세요");
+                break;
+            }
+            System.out.print("loginPw : ");
+            loginPw = sc.nextLine();
+
+            if (loginPw.length() == 0 || loginPw.contains(" ")) {
+                System.out.println("비밀번호를 다시 입력하세요");
+                continue;
+            }
+            if (member.getLoginPw().equals(loginPw) == false) {
+                System.out.println("비밀번호가 일치하지 않습니다.");
+                continue;
+            }
+        }
+        System.out.println(member.getName() + "님 환영합니다.");
+    }
 
     public void doJoin() {
         String loginId = null;
@@ -23,6 +84,7 @@ public class MemberController {
         String loginConfirm = null;
         String name = null;
         System.out.println("== 회원가입 ==");
+
 
         while (true) {
             System.out.print("loginId : ");
@@ -84,4 +146,6 @@ public class MemberController {
 
         System.out.println(id + "번 회원이 가입되었습니다.");
     }
+
+
 }

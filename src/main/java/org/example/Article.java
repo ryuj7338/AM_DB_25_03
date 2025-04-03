@@ -31,14 +31,6 @@ public class Article {
         this.body = (String) articleMap.get("body");
     }
 
-    @Override
-    public String toString() {
-        return "Article{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", body='" + body + '\'' +
-                '}';
-    }
 
     public String getRegDate() {
         return regDate;

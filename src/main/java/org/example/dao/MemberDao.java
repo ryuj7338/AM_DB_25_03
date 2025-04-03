@@ -3,7 +3,9 @@ package org.example.dao;
 import org.example.util.DBUtil;
 import org.example.util.SecSql;
 
+import java.lang.reflect.Member;
 import java.sql.Connection;
+import java.util.Map;
 
 public class MemberDao {
 
@@ -17,7 +19,6 @@ public class MemberDao {
 
         return DBUtil.selectRowBooleanValue(conn, sql);
     }
-
     public int doJoin(Connection conn, String loginId, String loginPw, String name) {
 
         SecSql sql = new SecSql();
@@ -30,5 +31,19 @@ public class MemberDao {
         sql.append("`name` = ?;", name);
 
         return DBUtil.insert(conn, sql);
+    }
+
+    public Member getMemberByLoginId(Connection conn,String loginId) {
+        SecSql sql = new SecSql();
+
+        sql.append("SELECT * FROM `member`");
+        sql.append("WHERE loginId = ?;", loginId);
+
+        Map<String, Object> memberMap = DBUtil.selectRow(conn,sql);
+
+        if(memberMap.isEmpty()) {
+            return null;
+        }
+        return new Member(memberMap);
     }
 }

@@ -2,6 +2,7 @@ package org.example.sevice;
 
 import org.example.dao.MemberDao;
 
+import java.lang.reflect.Member;
 import java.sql.Connection;
 
 public class MemberService {
@@ -17,5 +18,9 @@ public class MemberService {
     }
     public int doJoin(Connection conn, String loginId, String loginPw, String name) {
         return memberDao.doJoin(conn,loginId,loginPw,name);
+    }
+
+    public Member getMemberByLoginId(Connection conn,String loginId) {
+        return memberDao.getMemberByLoginId(conn, loginId);
     }
 }
